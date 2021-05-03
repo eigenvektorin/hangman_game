@@ -26,7 +26,7 @@ grid.addWidget(label, 0, 0,1,3)
 
 #display logo
 logo = QLabel()
-image = QPixmap('C:\\Users\Monja Burkard\Documents\Kurse\Own_Projects\Hangman\Hangman.png')
+image = QPixmap('Hangman.png')
 logo.setPixmap(image)
 #logo.setAlignment(QtCore.Qt.AlignRight)
 logo.setStyleSheet("margin-top: 70px;")
