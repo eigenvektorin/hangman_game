@@ -10,13 +10,13 @@ from random import randint
 app = QApplication(sys.argv)
 win = QWidget()
 win.setGeometry(300,200,1300,900)
-#. X co-ordinat, Y co-ordinate, Width of the window to be set,Height of the window to be set
+
 win.setWindowTitle("Hangman")
 win.setStyleSheet("background: #161219;")
 
 grid = QGridLayout()
 
-#title
+#set title
 label = QtWidgets.QLabel(win)
 label.setText(f"Let's play \n          Hangman")
 label.setFont(QFont('Roboto', 40))
@@ -34,7 +34,7 @@ logo.setStyleSheet("margin-top: 70px;")
 grid.addWidget(logo, 0,7,7,5)
 
 
-# Verlierer
+# display message if game is lost
 winlost = QWidget()
 winlost.setGeometry(500,500,700,300)
 winlost.setStyleSheet("background: 'white'")
@@ -45,7 +45,7 @@ labelLost.setStyleSheet("margin-top: 5px; font-weight: bold; color: #161219;")
 labelLost.move(80,100) #x,y
 
 
-#Gewinner
+# display message if game is won
 winwon = QWidget()
 winwon.setGeometry(500,500,700,300)
 winwon.setStyleSheet("background: 'white'")
@@ -53,10 +53,10 @@ labelwon = QtWidgets.QLabel(winwon)
 labelwon.setText("You're a hero' :-)")
 labelwon.setFont(QFont('Roboto', 38))
 labelwon.setStyleSheet("margin-top: 5px; font-weight: bold; color: #161219;")
-labelwon.move(80,100) #x,y
+labelwon.move(80,100)
 
 
-
+#start game
 def new_game():
     f = open('nounlist.txt')
     all_lines = f.readlines()
@@ -104,7 +104,7 @@ def new_game():
     groupbox.setAlignment(QtCore.Qt.AlignCenter)
     grid.addWidget(groupbox,7,7,1,4)
 
-    #Striche als Platzhalter
+    #placeholder
     label_blank = QtWidgets.QLabel(win)
     #label_blank.setText(len(secret_word)*"_ ")
     label_blank.setFont(QFont('Arial', 32))
@@ -131,31 +131,23 @@ def new_game():
             label_remaining_Trials.setStyleSheet("color: 'white'")
             label_remaining_Trials.setAlignment(QtCore.Qt.AlignCenter)
             grid.addWidget(label_remaining_Trials, 6,0,1,3)
-            #print(letter_storage)
             if guess in letter_storage:
-                #print("You already guessed that")
                 break
             elif guess == "":
-                #print("Your input is empty")
                 break
             elif guess not in letter_storage and guess not in secret_word:
-                #print("\n Bad guess! \n")
                 letter_storage.append(guess)
                 label_letter_storage =QtWidgets.QLabel(win)
                 label_letter_storage.setText(guess)
                 label_letter_storage.setFont(QFont('Arial',14))
                 label_letter_storage.setStyleSheet("color: 'white'; margin-left: rand;" )
-                #label_letter_storage.setAlignment(QtCore.Qt.AlignLeft)
                 hbox.addWidget(label_letter_storage)
 
                 trial += 1
                 count+=1
-                #print(count)
                 break
             elif guess not in letter_storage and guess in secret_word:
-                #print("\n Good guess! \n")
                 count +=1
-                #print(count)
                 letter_storage.append(guess)
                 k=0
                 for char in secret_word:
@@ -166,9 +158,9 @@ def new_game():
                 break
 
         else:
-            #print("You lose!")
             winlost.show()
-    #Eingabemaske
+
+    #Input
     line_input = QtWidgets.QLineEdit(win)
     line_input.setMaxLength(1)
     line_input.setFont(QFont('Arial', 14))
@@ -198,7 +190,7 @@ def compare():
 
 new_game()
 
-#Seite um zu lösen
+#new window for solving
 winsolve = QWidget()
 gridsolve = QGridLayout()
 winsolve.setWindowTitle("Solve")
@@ -210,29 +202,25 @@ label2.setFont(QFont('Roboto', 26))
 label2.setStyleSheet("margin-bottom:70px;font-weight: bold; color: #161219;")
 gridsolve.addWidget(label2,0,0,1,5)
 
-# EIngabe Lösungswort
+#enter word
 line_solve = QtWidgets.QLineEdit(winsolve)
 line_solve.setFont(QFont('Arial', 16))
 line_solve.setStyleSheet("margin-bottom:20px;border: 1px solid #161219;border-radius 8px;color: #161219;")
-#line_solve.move(200,150)
 gridsolve.addWidget(line_solve,1,1,1,2)
-#print(line_solve.text())
-#Sumbit
+
 button_solve = QPushButton(winsolve)
 button_solve.setText("Submit")
 button_solve.setFont(QFont('Monsterrat',14))
 button_solve.setStyleSheet("margin-bottom:100px;border: 1px solid #161219; border-radius: 8px; color: #161219;")
 button_solve.clicked.connect(compare)
-#button_solve.resize(200,32)
+
 gridsolve.addWidget(button_solve, 2,1,1,2)
-#button_solve.move(200, 200)
 winsolve.setLayout(gridsolve)
 def solve():
     winsolve.show()
 
-# Neues Spiel nach verlieren
+# start new game after game is lost
 button = QtWidgets.QPushButton(winlost)
-#button.setFixedWidth(250)
 button.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 button.setText("New Game")
 button.setFont(QFont('Arial', 14))
@@ -242,9 +230,8 @@ button.clicked.connect(new_game)
 button.clicked.connect(winlost.close)
 button.clicked.connect(winsolve.close)
 
-# Neues Spiel nach gewinnen
+# start new game after game is won
 button = QtWidgets.QPushButton(winwon)
-#button.setFixedWidth(250)
 button.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 button.setText("New Game")
 button.setFont(QFont('Arial', 14))
@@ -258,7 +245,6 @@ button.clicked.connect(winsolve.close)
 #Buttons main
 button = QtWidgets.QPushButton(win)
 button.setText("Solve")
-#button.setFixedWidth(150)
 button.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 button.setFont(QFont('Arial', 14))
 button.setStyleSheet("margin-top: 5px; border: 1px solid 'white'; color: 'white'; border-radius: 8px;")
@@ -266,7 +252,6 @@ button.clicked.connect(solve)
 grid.addWidget(button, 5, 1)
 
 button = QtWidgets.QPushButton(win)
-#button.setFixedWidth(250)
 button.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
 button.setText("New Game")
 button.setFont(QFont('Arial', 14))
